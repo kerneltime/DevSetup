@@ -1,4 +1,4 @@
-FROM kerneltime-rust
+FROM kerneltime/rust
 
 MAINTAINER Ritesh H Shukla <kerneltime@gmail.com>
 
@@ -6,20 +6,31 @@ RUN git clone https://github.com/phildawes/racer.git /root/src/racer
 RUN cd /root/src/racer; cargo build --release
 
 RUN mkdir -p ~/.vim/autoload ~/.vim/bundle && \
-	curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim && \
-	echo "execute pathogen#infect()" >> ~/.vimrc && \
-	echo "syntax on" >> ~/.vimrc && \
-	echo "filetype plugin indent on" >> ~/vimrc && \
-	echo "let g:rustfmt_autosave = 1" >> ~/vimrc
+	curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 
 RUN git clone --depth=1 https://github.com/rust-lang/rust.vim.git ~/.vim/bundle/rust.vim
 
 RUN git clone https://github.com/racer-rust/vim-racer.git ~/.vim/bundle/vim-racer && \
 	mkdir -p ~/.vim/plugin && \
-	cp ~/.vim/bundle/vim-racer/plugin/racer.vim ~/.vim/plugin
+	cp ~/.vim/bundle/vim-racer/plugin/racer.vim ~/.vim/plugin 
  
-RUN echo "set hidden" >> ~/.vimrc && \
-	echo "let g:racer_cmd = \"/root/src/racer/target/release/racer\"" >> ~/.vimrc && \
-	echo "let \$RUST_SRC_PATH=\"/root/src/rust/src/\"" >> ~/.vimrc
-	
+RUN git clone https://github.com/jlanzarotta/bufexplorer.git ~/.vim/bundle/bufexplorer 
 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y  zsh
+
+RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && \
+	cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc 
+
+RUN git clone http://github.com/sjl/gundo.vim.git ~/.vim/bundle/gundo
+
+RUN DEBIAN_FRONEND=noninteractive apt-get install -y silversearcher-ag && \
+        git clone https://github.com/rking/ag.vim.git ~/.vim/bundle/ag.vim
+
+RUN git clone https://github.com/bling/vim-airline ~/.vim/bundle/vim-airline
+
+# http://ctrlpvim.github.io/ctrlp.vim
+RUN git clone https://github.com/ctrlpvim/ctrlp.vim.git ~/.vim/bundle/ctrlp.vim
+
+COPY vimrc /root/.vimrc
+
+CMD zsh

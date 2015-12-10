@@ -3,10 +3,9 @@ FROM ubuntu
 MAINTAINER Ritesh H Shukla <kerneltime@gmail.com>
 
 ENV GOPATH=/root/src
-WORKDIR /root/src
 
-RUN apt-get update &&\ 
-	apt-get install -y --no-install-recommends \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update &&\ 
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 	vim vim-scripts vim-gocomplete vim-youcompleteme vim-addon-manager vim-syntax-docker \
 	git \
 	golang gocode \

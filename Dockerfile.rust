@@ -1,4 +1,4 @@
-FROM kerneltime-ubuntu-base
+FROM kerneltime/ubuntu-base
 
 MAINTAINER Ritesh H Shukla <kerneltime@gmail.com>
 
