@@ -10,5 +10,8 @@ docker run -it \
            -v $(which docker):/bin/docker \
 	   -v $(ldconfig -p | grep 'libdevmapper.so.1.02' | awk '{print $4}'):/usr/lib/libdevmapper.so.1.02 \
            -e LD_LIBRARY_PATH=/usr/lib \
-	   kerneltime/dev  /bin/bash -c "ldconfig; sed -i  's/ZSH_THEME=.*/ZSH_THEME=candy/g' ~/.zshrc; ZSH_THEME=candy zsh"
-
+	   kerneltime/dev  /bin/bash -c "ldconfig ; \
+					 git config --global user.email \"sritesh@vmware.com\"; \
+				         git config --global user.name \"Ritesh H Shukla\"; \
+					 sed -i 's/ZSH_THEME=.*/ZSH_THEME=candy/g' ~/.zshrc;
+					 zsh"
