@@ -4,6 +4,8 @@ MAINTAINER Ritesh H Shukla <kerneltime@gmail.com>
 
 ENV GOPATH=/root/src
 
+RUN set -ex
+
 RUN DEBIAN_FRONTEND=noninteractive apt-get update &&\ 
 	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 	vim vim-scripts vim-gocomplete vim-youcompleteme vim-addon-manager vim-syntax-docker \

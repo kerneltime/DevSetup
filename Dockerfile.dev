@@ -2,6 +2,8 @@ FROM kerneltime/rust
 
 MAINTAINER Ritesh H Shukla <kerneltime@gmail.com>
 
+RUN set -ex
+
 RUN git clone https://github.com/phildawes/racer.git /root/src/racer
 RUN cd /root/src/racer; cargo build --release
 
@@ -23,7 +25,7 @@ RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && \
 
 RUN git clone http://github.com/sjl/gundo.vim.git ~/.vim/bundle/gundo
 
-RUN DEBIAN_FRONEND=noninteractive apt-get install -y silversearcher-ag && \
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y silversearcher-ag && \
         git clone https://github.com/rking/ag.vim.git ~/.vim/bundle/ag.vim
 
 RUN git clone https://github.com/bling/vim-airline ~/.vim/bundle/vim-airline
@@ -31,6 +33,13 @@ RUN git clone https://github.com/bling/vim-airline ~/.vim/bundle/vim-airline
 # http://ctrlpvim.github.io/ctrlp.vim
 RUN git clone https://github.com/ctrlpvim/ctrlp.vim.git ~/.vim/bundle/ctrlp.vim
 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y rlwrap
+
 COPY vimrc /root/.vimrc
+
+#CHANGE CONFIG AS NEEDED!!
+RUN git config --global user.email "sritesh@vmware.com"
+RUN git config --global user.name "Ritesh H Shukla"
+
 
 CMD zsh
