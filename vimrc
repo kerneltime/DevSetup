@@ -1,6 +1,9 @@
 execute pathogen#infect()  
 
-syntax on  
+syntax on 
+set background=dark
+colorscheme solarized 
+let g:solarized_termcolors=256
 filetype plugin indent on  
 
 set hidden	
@@ -11,7 +14,7 @@ set hlsearch
 set incsearch
 set ignorecase 
 set smartcase
-set mouse=a
+set mouse=n
 set expandtab
 set number
 set cursorline 
