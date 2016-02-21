@@ -2,45 +2,61 @@ FROM kerneltime/rust
 
 MAINTAINER Ritesh H Shukla <kerneltime@gmail.com>
 
-RUN set -ex
+USER ritesh
 
-RUN git clone https://github.com/phildawes/racer.git /root/src/racer
-RUN cd /root/src/racer; cargo build --release
+# Setup VIM
+RUN git clone https://github.com/phildawes/racer.git ~/src/racer
+RUN cd ~/src/racer; cargo build --release
 
-RUN mkdir -p ~/.vim/autoload ~/.vim/bundle && \
-	curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+RUN mkdir -p /home/ritesh/.vim/autoload /home/ritesh/.vim/bundle && \
+	curl -LSso /home/ritesh/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 
-RUN git clone --depth=1 https://github.com/rust-lang/rust.vim.git ~/.vim/bundle/rust.vim
+RUN git clone --depth=1 https://github.com/rust-lang/rust.vim.git /home/ritesh/.vim/bundle/rust.vim
 
-RUN git clone https://github.com/racer-rust/vim-racer.git ~/.vim/bundle/vim-racer && \
-	mkdir -p ~/.vim/plugin && \
-	cp ~/.vim/bundle/vim-racer/plugin/racer.vim ~/.vim/plugin 
+RUN git clone https://github.com/racer-rust/vim-racer.git /home/ritesh/.vim/bundle/vim-racer && \
+	mkdir -p /home/ritesh/.vim/plugin && \
+	cp /home/ritesh/.vim/bundle/vim-racer/plugin/racer.vim /home/ritesh/.vim/plugin 
  
-RUN git clone https://github.com/jlanzarotta/bufexplorer.git ~/.vim/bundle/bufexplorer 
+RUN git clone https://github.com/jlanzarotta/bufexplorer.git /home/ritesh/.vim/bundle/bufexplorer 
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y  zsh
+RUN git clone http://github.com/sjl/gundo.vim.git /home/ritesh/.vim/bundle/gundo
 
-RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && \
-	cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc 
+RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y silversearcher-ag && \
+        git clone https://github.com/rking/ag.vim.git /home/ritesh/.vim/bundle/ag.vim
 
-RUN git clone http://github.com/sjl/gundo.vim.git ~/.vim/bundle/gundo
+RUN git clone https://github.com/bling/vim-airline /home/ritesh/.vim/bundle/vim-airline
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y silversearcher-ag && \
-        git clone https://github.com/rking/ag.vim.git ~/.vim/bundle/ag.vim
+RUN cd /home/ritesh/.vim/bundle && git clone git://github.com/altercation/vim-colors-solarized.git
 
-RUN git clone https://github.com/bling/vim-airline ~/.vim/bundle/vim-airline
+COPY vimrc /home/ritesh/.vimrc
 
 # http://ctrlpvim.github.io/ctrlp.vim
-RUN git clone https://github.com/ctrlpvim/ctrlp.vim.git ~/.vim/bundle/ctrlp.vim
+RUN git clone https://github.com/ctrlpvim/ctrlp.vim.git /home/ritesh/.vim/bundle/ctrlp.vim
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y rlwrap apt-transport-https
+# ZSH
+RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y  zsh
 
-COPY docker.list /etc/apt/sources.list.d/docker.list
-RUN DEBIAN_FRONTEND=noninteractive apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D && \
-	DEBIAN_FRONTEND=noninteractive apt-get update && \
-	DEBIAN_FRONTEND=noninteractive apt-get install -y apparmor
+RUN git clone git://github.com/robbyrussell/oh-my-zsh.git /home/ritesh/.oh-my-zsh && \
+	cp /home/ritesh/.oh-my-zsh/templates/zshrc.zsh-template /home/ritesh/.zshrc 
 
-RUN cd ~/.vim/bundle && git clone git://github.com/altercation/vim-colors-solarized.git
+RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y rlwrap apt-transport-https
 
-COPY vimrc /root/.vimrc
+USER root
+#DinD
+RUN apt-get install -yqq apt-transport-https ca-certificates && \
+    apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D && \
+    echo 'deb https://apt.dockerproject.org/repo ubuntu-trusty main' > /etc/apt/sources.list.d/docker.list && \
+    apt-get update && \ 
+    apt-get install -yqq apparmor && \
+    apt-get install -yqq docker-engine
 
+USER ritesh
+
+# GO
+RUN set -ex; cd /home/ritesh/; curl -O https://storage.googleapis.com/golang/go1.6.linux-amd64.tar.gz 
+
+RUN set -ex; cd /home/ritesh/; tar -zxf go1.6.linux-amd64.tar.gz && sudo mv go /usr/local
+
+ENV GOROOT=/usr/local/go
+ENV GOPATH=~/go
+ENV PATH="/usr/local/go/bin:$PATH"

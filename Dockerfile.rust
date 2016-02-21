@@ -2,19 +2,24 @@ FROM kerneltime/ubuntu-base
 
 MAINTAINER Ritesh H Shukla <kerneltime@gmail.com>
 
-RUN set -ex
+# Created in base
+USER ritesh
 
-RUN git clone https://github.com/rust-lang/rust.git /root/src/rust
+RUN git clone https://github.com/rust-lang/rust.git ~/src/rust
 
-RUN cd /root/src/rust && ./configure && make && make install
+RUN set -ex; \
+    cd ~/src/rust; \ 
+    ./configure; \
+    make; \ 
+    sudo make install
 
-RUN git clone https://github.com/rust-lang/cargo.git /root/src/cargo
+RUN git clone https://github.com/rust-lang/cargo.git ~/src/cargo
 
-RUN cd /root/src/cargo && \
+RUN cd ~/src/cargo && \
     	git submodule update --init && \
 	python -B src/etc/install-deps.py && \
-	./configure && make && make install
+	./configure && make && sudo make install
 
-RUN cargo install --git https://github.com/rust-lang-nursery/rustfmt
+#RUN cargo install --git https://github.com/rust-lang-nursery/rustfmt
 
-ENV RUST_SRC_PATH=/root/src/rust/src
+ENV RUST_SRC_PATH=~/src/rust/src

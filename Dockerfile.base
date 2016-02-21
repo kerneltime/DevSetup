@@ -2,17 +2,16 @@ FROM ubuntu
 
 MAINTAINER Ritesh H Shukla <kerneltime@gmail.com>
 
-ENV GOPATH=/root/src
+RUN adduser --disabled-password --gecos '' ritesh && adduser ritesh sudo && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-RUN set -ex
+USER ritesh
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update &&\ 
-	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+RUN set -ex; \ 
+    sudo DEBIAN_FRONTEND=noninteractive apt-get update; \
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 	vim vim-scripts vim-gocomplete vim-youcompleteme vim-addon-manager vim-syntax-docker \
 	git \
-	golang gocode \
 	make curl wget python clang llvm gcc g++ cmake libssl-dev \
 	ssh
 
-RUN go get golang.org/x/tools/cmd/goimports &&\ 
-	go get github.com/golang/lint/golint
+RUN mkdir -p ~/src
