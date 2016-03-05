@@ -5,21 +5,21 @@ MAINTAINER Ritesh H Shukla <kerneltime@gmail.com>
 # Created in base
 USER ritesh
 
-RUN git clone https://github.com/rust-lang/rust.git ~/src/rust
+RUN git clone https://github.com/rust-lang/rust.git /home/ritesh/src/rust
 
 RUN set -ex; \
-    cd ~/src/rust; \ 
+    cd /home/ritesh/src/rust; \ 
     ./configure; \
     make; \ 
     sudo make install
 
-RUN git clone https://github.com/rust-lang/cargo.git ~/src/cargo
+RUN git clone https://github.com/rust-lang/cargo.git /home/ritesh/src/cargo
 
-RUN cd ~/src/cargo && \
+RUN cd /home/ritesh/src/cargo && \
     	git submodule update --init && \
 	python -B src/etc/install-deps.py && \
 	./configure && make && sudo make install
 
 #RUN cargo install --git https://github.com/rust-lang-nursery/rustfmt
 
-ENV RUST_SRC_PATH=~/src/rust/src
+ENV RUST_SRC_PATH=/home/ritesh/src/rust/src

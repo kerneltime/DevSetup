@@ -14,4 +14,4 @@ RUN set -ex; \
 	make curl wget python clang llvm gcc g++ cmake libssl-dev \
 	ssh
 
-RUN mkdir -p ~/src
+RUN mkdir -p /home/ritesh/src

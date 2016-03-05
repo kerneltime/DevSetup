@@ -5,8 +5,8 @@ MAINTAINER Ritesh H Shukla <kerneltime@gmail.com>
 USER ritesh
 
 # Setup VIM
-RUN git clone https://github.com/phildawes/racer.git ~/src/racer
-RUN cd ~/src/racer; cargo build --release
+RUN git clone https://github.com/phildawes/racer.git /home/ritesh/src/racer
+RUN cd /home/ritesh/src/racer; cargo build --release
 
 RUN mkdir -p /home/ritesh/.vim/autoload /home/ritesh/.vim/bundle && \
 	curl -LSso /home/ritesh/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
@@ -58,5 +58,5 @@ RUN set -ex; cd /home/ritesh/; curl -O https://storage.googleapis.com/golang/go1
 RUN set -ex; cd /home/ritesh/; tar -zxf go1.6.linux-amd64.tar.gz && sudo mv go /usr/local
 
 ENV GOROOT=/usr/local/go
-ENV GOPATH=~/go
+ENV GOPATH=/home/ritesh/go
 ENV PATH="/usr/local/go/bin:$PATH"

@@ -21,12 +21,14 @@ set cursorline
 set lazyredraw
 set backup
 set writebackup
+set swapfile
+set dir=/tmp
 
 map nnoremap <leader>u :GundoToggle<CR>
 
 let g:rustfmt_autosave = 1  
 let g:racer_cmd="/root/src/racer/target/release/racer"
-let $RUST_SRC_PATH="/root/src/rust/src/"
+let $RUST_SRC_PATH="/home/ritesh/src/rust/src/"
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 	
 augroup configgroup
