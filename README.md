@@ -1,4 +1,4 @@
-[![git-brag-stats](https://labs.turbo.run/git-brag?user=vmware&repo=vic)](https://github.com/turbo/git-brag)
+[![git-brag-stats](https://labs.turbo.run/git-brag?user=vmware&repo=docker-volume-vsphere)](https://github.com/turbo/git-brag)
 # DevSetup
 
 Using Docker to reproduce my dev environment. 
